@@ -127,3 +127,11 @@ await todoPage.addTodo('Buy milk');
 - [Playwright Docs](https://playwright.dev/docs/intro)
 - [Playwright API Reference](https://playwright.dev/docs/api/class-playwright)
 - [TodoMVC Demo App](https://demo.playwright.dev/todomvc)
+
+---
+
+## Acknowledgements
+
+Built with assistance from [Claude Code](https://claude.ai/claude-code) (Anthropic) —
+an AI coding assistant used to accelerate test development, structure learning lessons,
+and review code quality.
