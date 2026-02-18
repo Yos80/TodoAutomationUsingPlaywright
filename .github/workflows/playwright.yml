@@ -1,0 +1,91 @@
+# ─── WHAT IS THIS FILE? ───────────────────────────────────────────────────────
+#
+# This is a GitHub Actions workflow file.
+# GitHub reads it automatically whenever you push code.
+# It runs your Playwright tests on a clean cloud machine (Ubuntu)
+# so you always know whether your tests are passing.
+#
+# File location matters: must be inside .github/workflows/
+# File format: YAML (.yml) — indentation is significant, use spaces not tabs.
+
+# ─── WORKFLOW NAME ────────────────────────────────────────────────────────────
+# Shown in the GitHub Actions UI under the "Actions" tab of your repo.
+name: Playwright Tests
+
+# ─── TRIGGERS ─────────────────────────────────────────────────────────────────
+# `on` defines what events cause this workflow to run.
+#
+# push:       runs when you push commits to the main branch
+# pull_request: runs when a PR is opened or updated targeting main
+#
+# This means every commit and every PR gets tested automatically.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# ─── JOBS ─────────────────────────────────────────────────────────────────────
+# A workflow contains one or more jobs. Each job runs on its own machine.
+# Jobs run in parallel by default (useful for running on multiple browsers).
+# Here we have one job called `test`.
+jobs:
+  test:
+    # The type of virtual machine to run on.
+    # ubuntu-latest is the standard choice — fast, free, and what most CI uses.
+    runs-on: ubuntu-latest
+
+    # ─── STEPS ──────────────────────────────────────────────────────────────
+    # Steps run sequentially inside the job, top to bottom.
+    # Each step is either a shell command (`run`) or a pre-built action (`uses`).
+    steps:
+
+      # Step 1: Check out your repository code onto the CI machine.
+      # `actions/checkout` is an official GitHub Action — it's like running
+      # `git clone` so the machine has your files to work with.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js on the machine.
+      # `actions/setup-node` installs the Node version you specify.
+      # We pin to Node 20 (LTS) for stability.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install your project's npm dependencies.
+      # Same as running `npm install` locally.
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Install Playwright's browser binaries.
+      # The npm package gives you the Playwright API, but the actual
+      # browser executables (Chromium, Firefox, etc.) are downloaded separately.
+      # --with-deps also installs OS-level dependencies needed on Linux.
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      # Step 5: Run all your Playwright tests.
+      # The CI environment variable is automatically set to "true" by GitHub,
+      # which triggers the CI-specific settings in playwright.config.ts:
+      #   - retries: 2  (retry flaky tests before marking them failed)
+      #   - workers: 1  (run tests sequentially to avoid resource contention)
+      #   - forbidOnly: true  (fail if test.only was left in accidentally)
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      # Step 6: Upload the HTML report as an artifact.
+      # Even if tests fail, the report is saved and downloadable from GitHub.
+      # This lets you inspect exactly what failed without re-running locally.
+      #
+      # `if: always()` means this step runs regardless of whether previous
+      # steps succeeded or failed — important so you get the report on failure.
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          # Keep the report for 30 days before GitHub deletes it
+          retention-days: 30
