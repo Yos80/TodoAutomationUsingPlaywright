@@ -4,11 +4,23 @@ A hands-on project for learning [Playwright](https://playwright.dev/) test autom
 
 ---
 
+## Built With
+
+| Technology | Purpose |
+|---|---|
+| [Playwright](https://playwright.dev/) | Test automation framework |
+| [TypeScript](https://www.typescriptlang.org/) | Language — adds types to JavaScript |
+| [Node.js](https://nodejs.org/) | Runtime environment |
+| [JSONPlaceholder](https://jsonplaceholder.typicode.com/) | Public fake REST API used for API testing lessons |
+| [TodoMVC](https://demo.playwright.dev/todomvc) | Demo app used as the test target |
+
+---
+
 ## What's covered
 
 | Concept | Where |
 |---|---|
-| Basic locators (`getByPlaceholder`, `getByRole`, `getByTestId`, `getByLabel`) | `tests/todo-flat.spec.ts` |
+| Basic locators — `getByPlaceholder`, `getByRole`, `getByTestId`, `getByLabel` | `tests/todo-flat.spec.ts` + `tests/todo-fixtures.spec.ts` |
 | Assertions (`toBeVisible`, `toContainText`, `toHaveCount`, `toHaveClass`) | both spec files |
 | Page Object Model (POM) | `tests/pages/TodoPage.ts` + `tests/locators.spec.ts` |
 | `test.describe` groups and `beforeEach` hooks | `tests/locators.spec.ts` |
