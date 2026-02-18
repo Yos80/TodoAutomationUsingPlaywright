@@ -53,5 +53,6 @@ test('filter by active', async ({ page }) => {
   await page.getByTestId('todo-item').nth(1).getByLabel('Toggle Todo').check();
   await page.getByRole('link', { name: 'Active' }).click();
   await expect(page.getByTestId('todo-item')).toHaveCount(1);
-  await expect(page.getByText('Active', { exact: true })).toBeVisible();
+  // Scope inside the todo item to avoid matching the 'Active' filter link too
+  await expect(page.getByTestId('todo-item').first()).toContainText('Active');
 });
