@@ -29,6 +29,8 @@ A hands-on project for learning [Playwright](https://playwright.dev/) test autom
 | API testing with `request` fixture | `tests/todo/todo-api.spec.ts` |
 | Playwright Agents — Planner, Generator, Healer | `tests/saucedemo/` + `specs/saucedemo-plan.md` |
 | `data-test` attribute selectors | `tests/saucedemo/` |
+| Visual regression testing (`toHaveScreenshot`) | `tests/saucedemo/visual.spec.ts` |
+| On-failure screenshots | `playwright.config.ts` — `screenshot: 'only-on-failure'` |
 
 ---
 
@@ -50,10 +52,12 @@ playwright-learning/
 │   └── saucedemo/
 │       ├── pages/
 │       │   └── SaucePage.ts       # Page Object Model for SauceDemo
+│       ├── visual.spec.ts-snapshots/  # Baseline PNG files (committed to git)
 │       ├── auth.spec.ts           # Login, logout, error cases
 │       ├── products.spec.ts       # Catalog, sorting, product detail
 │       ├── cart.spec.ts           # Add, remove, continue shopping
-│       └── checkout.spec.ts      # Happy path, validation, cancel
+│       ├── checkout.spec.ts       # Happy path, validation, cancel
+│       └── visual.spec.ts         # Visual regression with toHaveScreenshot
 ├── playwright.config.ts           # Playwright configuration
 └── package.json
 ```
@@ -110,6 +114,18 @@ npx playwright test --headed
 
 ```bash
 npx playwright show-report
+```
+
+**Run visual regression tests**
+
+```bash
+npx playwright test tests/saucedemo/visual.spec.ts
+```
+
+**Regenerate visual baselines** (after intentional UI change)
+
+```bash
+npx playwright test tests/saucedemo/visual.spec.ts --update-snapshots
 ```
 
 ---

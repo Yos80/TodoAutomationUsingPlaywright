@@ -27,6 +27,10 @@ export default defineConfig({
     // Capture a trace on the first retry of a failed test
     // View traces at: https://trace.playwright.dev
     trace: 'on-first-retry',
+
+    // Take a screenshot whenever a test fails
+    // Saved to test-results/ and visible in the HTML report
+    screenshot: 'only-on-failure',
   },
 
   projects: [
