@@ -10,7 +10,11 @@
 import { test, expect } from '@playwright/test';
 import { SaucePage } from './pages/SaucePage';
 
+// Visual baselines are OS-specific (darwin vs linux) so we skip on CI.
+// To run locally: npx playwright test tests/saucedemo/visual.spec.ts
+// To regenerate baselines: npx playwright test tests/saucedemo/visual.spec.ts --update-snapshots
 test.describe('Visual Regression', () => {
+  test.skip(!!process.env.CI, 'Visual baselines are generated on macOS — skipped on CI');
   let sauce: SaucePage;
 
   test.beforeEach(async ({ page }) => {
