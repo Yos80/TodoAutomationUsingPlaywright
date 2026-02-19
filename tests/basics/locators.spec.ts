@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { TodoPage } from './pages/TodoPage';
+import { TodoPage } from '../todo/pages/TodoPage';
 
 // ─── UI: Page structure ───────────────────────────────────────────────────────
 
